@@ -51,7 +51,7 @@ const skyNet = require('./data/darksky.json');
 function getWeather(location) {
     const forecastArray = [];
     skyNet.daily.data.forEach(dailyForecast => {
-        const forecastDay = new Date(dailyForecast.time);
+        const forecastDay = new Date(dailyForecast.time * 1000);
         const dateArray = forecastDay.toUTCString().split(' ');
         let day = dateArray[0].split(',')[0];
         let date = dateArray[1];
