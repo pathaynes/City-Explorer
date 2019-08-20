@@ -4,6 +4,7 @@ require('dotenv').config();
 // Application Dependencies
 const express = require('express');
 const cors = require('cors');
+const request = require('superagent');
 
 // Application Setup
 // - make an express app!
