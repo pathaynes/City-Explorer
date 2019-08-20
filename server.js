@@ -18,21 +18,20 @@ app.use(express.static('server.js'));
 app.get('/location', (request, response) => {
     try {
         const responseObject = getLatLong(request.query.search);
-        response.status(200).send(responseObject);
+        response.status(200).json(responseObject);
     } 
     catch(err) {
-        response.status(500).send({ error: 'something blew up' });
+        response.status(500).json('server.error: something blew up');
     }
 });
 
 app.get('/weather', (request, response) => {
     try {
-        console.log(request.location);
         const responseArray = getWeather(request.location);
-        response.status(200).send(responseArray);
+        response.status(200).json(responseArray);
     } 
     catch(err) {
-        response.status(500).send({ error: 'something blew up' });
+        response.status(500).json('error: something blew up');
     }
 });
 
@@ -48,7 +47,7 @@ function getLatLong(searchString){
 }
 
 const skyNet = require('./data/darksky.json');
-function getWeather(location) {
+function getWeather(/*location*/) {
     const forecastArray = [];
     skyNet.daily.data.forEach(dailyForecast => {
         const forecastDay = new Date(dailyForecast.time * 1000);
@@ -63,7 +62,6 @@ function getWeather(location) {
         };
         forecastArray.push(responseObject);
     });
-    console.log(forecastArray);
     return forecastArray;
 }
 
