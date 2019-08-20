@@ -13,42 +13,11 @@ const PORT = process.env.PORT;
 // - enable CORS
 app.use(cors());
 
-// API Routes
-// app.<verb>(<noun>, handler);
 app.get('/location', (request, response) => {
-    try {
-        // use express built-in query object
-        const location = request.query.location;
-        const result = getLatLng(location);
-        response.status(200).json(result);
-    }
-    catch(err) {
-        // TODO: make an object and send via .json...
-        response.status(500).send('Sorry something went wrong, please try again');
-    }
+    console.log(request.baseUrl);
+    console.log(request.hostname);
+    response.status(500).send({ error: 'something blew up' })
 });
-
-// node CJS "require" will parse JSON for us into array/object
-const geoData = require('./data/geo.json');
-
-// Helper Functions
-function getLatLng(/*location*/) {
-    // ignore location for now, return hard-coded file
-    // api call will go here
-
-    return toLocation(geoData);
-}
-
-function toLocation(/*geoData*/) {
-    const firstResult = geoData.results[0];
-    const geometry = firstResult.geometry;
-    
-    return {
-        formatted_query: firstResult.formatted_address,
-        latitude: geometry.location.lat,
-        longitude: geometry.location.lng
-    };
-}
 
 // Start the server
 app.listen(PORT, () => {
