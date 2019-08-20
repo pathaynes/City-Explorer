@@ -14,10 +14,25 @@ const PORT = process.env.PORT;
 app.use(cors());
 
 app.get('/location', (request, response) => {
-    console.log(request.baseUrl);
-    console.log(request.hostname);
-    response.status(500).send({ error: 'something blew up' })
+    try {
+        const responseObject = getLatLong(request.query.search);
+        response.status(200).send(responseObject);
+    } 
+    catch(err) {
+        response.status(500).send({ error: 'something blew up' });
+    }
 });
+
+const geoData = require('./data/geo.json');
+function getLatLong(searchString){
+    const responseObject = {
+        'search_query': searchString,
+        'formatted_query': geoData.results[0].formatted_address,
+        'latitude': geoData.results[0].geometry.location.lat,
+        'longitude': geoData.results[0].geometry.location.lng
+    };
+    return responseObject;
+}
 
 // Start the server
 app.listen(PORT, () => {
